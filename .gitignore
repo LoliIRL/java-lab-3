@@ -1,0 +1,22 @@
+# Compiled class files
+*.class
+target/
+build/
+
+# IDE files
+.idea/
+*.iml
+*.iws
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Exceptions - don't ignore our source code
+!src/
+!*.md
+!*.yml
+!.github/
