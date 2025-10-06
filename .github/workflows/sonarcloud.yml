@@ -11,28 +11,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-      - name: Build and analyze
+      - name: Run SonarScanner via Docker
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          ./gradlew build sonarqube \
+          docker run \
+            --rm \
+            -e SONAR_TOKEN="$SONAR_TOKEN" \
+            -v "$(pwd):/usr/src" \
+            sonarsource/sonar-scanner-cli:latest \
             -Dsonar.projectKey=LoliIRL_java-lab-3 \
             -Dsonar.organization=loliirl \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.token=$SONAR_TOKEN
+            -Dsonar.sources=src/main/java \
+            -Dsonar.host.url=https://sonarcloud.io
