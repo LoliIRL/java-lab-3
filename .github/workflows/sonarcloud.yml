@@ -1,24 +1,16 @@
 name: SonarCloud Analysis
-on:
-  push:
-    branches: [ main ]
+on: [push, pull_request]
 
 jobs:
-  analyze:
-    name: SonarCloud Scan
+  sonarcloud:
+    name: SonarCloud
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v5.0.0
+        uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.projectKey=LoliIRL_java-lab-3
-            -Dsonar.organization=loliirl
-            -Dsonar.sources=src/main/java
